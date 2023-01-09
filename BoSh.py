@@ -53,10 +53,9 @@ try:
         # Si se encontraron vulnerabilidades conocidas, las muestra en pantalla
         if cves_list:
             print('CVE:')
-            print('CVE:', file = f)  # Muestra un título para la lista de CVE
+            print('ES VULNERABLE CVE-XXXX', file = f)  # Muestra un título para la lista de CVE
             cves = ' - '.join(cves_list)  # Une la lista de CVE en una sola cadena
-            print(f'{cves}')  # Muestra la cadena con los nombres de las CVE
-            print(f'{cves}', file = f)
+            print(f'{cves}')
     except shodan.APIError as e:
         print("Error de la API:", e)
 except ValueError:
