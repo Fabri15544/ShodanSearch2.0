@@ -1,6 +1,11 @@
 import shodan
 import ipaddress
 
+print("-----------------------------")
+print("BUSCADOR SHODAN")
+print("-----------------------------")
+print("\n")
+
 # Trata de leer la clave de API del archivo "api_key.txt"
 try:
     with open("api_key.txt", "r") as f:
