@@ -31,18 +31,24 @@ try:
         host_info = api.host(query)
         # Declara una lista para almacenar las vulnerabilidades conocidas (CVE)
         cves_list = []
-        f = open(query + ".txt", 'w', encoding="utf-8")
+        if ip:
+            f = open(query + ".txt", 'w', encoding="utf-8")
+            # rest of the code
+        else:
+            print("Please enter a valid IP address")
         # Recorre cada resultado y muestra la información en pantalla y en el archivo
         for item in host_info['data']:
-            if 'product' in item:
+            print("IP: " + item['ip_str'] + ":" + str(item['port']))
+            print("IP: " + item['ip_str'] + ":" + str(item['port']) , file = f)
+            if 'product' in item is not None:
                 print("Servicio:", item['product'])
                 print("Servicio:", item['product'], file = f)
             else:
                 print("Servicio: El Servicio No Esta Disponible")
                 print("Servicio: El Servicio No Esta Disponible" , file = f)
-            if "http" in item:
+            if "http" in item is not None:
                 print(f'Titulo: Nombre Pagina: {item["http"]["title"]}')
-                print(f'Banner: Código de estado HTTP: {item["http"]["status"]}' , file = f)
+                print(f'Banner: Código de estado HTTP: {item["http"]["status"]}')
                 print(f'Banner: Código de estado HTTP: {item["http"]["status"]}' , file = f)
             else:
                 print("Titulo : Nombre Pagina: No Encontrado")
@@ -55,8 +61,6 @@ try:
             else:
                 print("Sistema Operativo: No Es Una Computadora")
                 print("Sistema Operativo: No Es Una Computadora" , file = f)
-            print("Puerto:", item['port'])
-            print("Puerto:", item['port'], file = f)
             print("Organización:", item['org'])            
             print("Organización:", item['org'], file = f)
             print("Ciudad:", item['location']['city'] + "\n")            
@@ -86,11 +90,13 @@ finally:
         results = api.search(query)
         # Trata de abrir el archivo para escribir en él
         try:
-            with open(query + ".txt", "w", encoding="utf-8") as f:
+            if query is not None:
+               with open(query + ".txt", "w", encoding="utf-8") as f:
                 # Recorre cada resultado y escribe la información en el archivo y en pantalla
                 for result in results['matches']:
-                    f.write("IP: " + result['ip_str'] + "\n")
-                    if 'product' in result:
+                    f.write("IP: " + result['ip_str'] + ":" + str(result['port']))
+                    f.write("\n")
+                    if 'product' in result is not None:
                         f.write("Servicio: " + result['product'] + "\n")
                     else:
                         f.write("Servicio: El Servicio No Esta Disponible\n")
@@ -110,27 +116,25 @@ finally:
                     else:
                         f.write("Sistema Operativo: No Es Una Computadora")
                     f.write("\n")
-                    f.write("Puertos: " + str(result['port']) + "\n")
                     f.write("Región: " + result['location']['region_code'] + "\n")
                     f.write("Ciudad: " + result['location']['city'] + "\n")
                     f.write("\n")
-                    print("IP:", result['ip_str'])
-                    if 'product' in result:
+                    print("IP: " + result['ip_str'] + ":" + str(result['port']))
+                    if 'product' in result is not None:
                         print("Servicio:", result['product'])
                     else:
                         print("Servicio: El Servicio No Esta Disponible")
-                    if "http" in result:
+                    if "http" in result is not None:
                         print(f'Titulo: Nombre Pagina: {result["http"]["title"]}')
                         print(f'Banner: Código de estado HTTP: {result["http"]["status"]}')
                     else:
                         print("Titulo : Nombre Pagina: No Encontrado")
                         print("Codigo de estado HTTP: UNKOWN")
                     print("Organización:", result['org'])
-                    if "os" in result:
+                    if "os" in result is not None:
                         print(f'Sistema Operativo: {result["os"]}')
                     else:
                         print("Sistema Operativo: No Es Una Computadora")
-                    print("Puertos:", result['port'])
                     print("Región:", result['location']['region_code'])
                     print("Ciudad:", result['location']['city'])
                     print("Timestamp:", result['timestamp'])
