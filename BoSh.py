@@ -40,6 +40,15 @@ try:
             else:
                 print("Servicio: El Servicio No Esta Disponible")
                 print("Servicio: El Servicio No Esta Disponible" , file = f)
+            if "http" in item:
+                print(f'Titulo: Nombre Pagina: {item["http"]["title"]}')
+                print(f'Banner: Código de estado HTTP: {item["http"]["status"]}' , file = f)
+                print(f'Banner: Código de estado HTTP: {item["http"]["status"]}' , file = f)
+            else:
+                print("Titulo : Nombre Pagina: No Encontrado")
+                print("Titulo : Nombre Pagina: No Encontrado" , file = f)
+                print("Codigo de estado HTTP: UNKOWN")
+                print("Codigo de estado HTTP: UNKOWN" , file = f)
             print("Puerto:", item['port'])
             print("Puerto:", item['port'], file = f)
             print("Sistema operativo:", item['os'])
@@ -81,6 +90,12 @@ finally:
                         f.write("Servicio: " + result['product'] + "\n")
                     else:
                         f.write("Servicio: El Servicio No Esta Disponible\n")
+                    if "http" in result:
+                        f.write(f'Titulo: Nombre Pagina: {result["http"]["title"]}')
+                        f.write(f'Banner: Código de estado HTTP: {result["http"]["status"]}')
+                    else:
+                        f.write("Titulo : Nombre Pagina: No Encontrado")
+                        f.write("Codigo de estado HTTP: UNKOWN")
                     f.write("Organización: " + result['org'] + "\n")
                     f.write("Puertos: " + str(result['port']) + "\n")
                     f.write("Región: " + result['location']['region_code'] + "\n")
@@ -91,6 +106,12 @@ finally:
                         print("Servicio:", result['product'])
                     else:
                         print("Servicio: El Servicio No Esta Disponible")
+                    if "http" in result:
+                        print(f'Titulo: Nombre Pagina: {result["http"]["title"]}')
+                        print(f'Banner: Código de estado HTTP: {result["http"]["status"]}')
+                    else:
+                        print("Titulo : Nombre Pagina: No Encontrado")
+                        print("Codigo de estado HTTP: UNKOWN")
                     print("Organización:", result['org'])
                     print("Puertos:", result['port'])
                     print("Región:", result['location']['region_code'])
