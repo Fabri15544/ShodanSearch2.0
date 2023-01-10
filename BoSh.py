@@ -31,7 +31,7 @@ try:
         host_info = api.host(query)
         # Declara una lista para almacenar las vulnerabilidades conocidas (CVE)
         cves_list = []
-        f = open(query + ".txt", 'w')
+        f = open(query + ".txt", 'w', encoding="utf-8")
         # Recorre cada resultado y muestra la información en pantalla y en el archivo
         for item in host_info['data']:
             if 'product' in item:
@@ -82,7 +82,7 @@ finally:
         results = api.search(query)
         # Trata de abrir el archivo para escribir en él
         try:
-            with open(query + ".txt", "w") as f:
+            with open(query + ".txt", "w", encoding="utf-8") as f:
                 # Recorre cada resultado y escribe la información en el archivo y en pantalla
                 for result in results['matches']:
                     f.write("IP: " + result['ip_str'] + "\n")
@@ -90,12 +90,16 @@ finally:
                         f.write("Servicio: " + result['product'] + "\n")
                     else:
                         f.write("Servicio: El Servicio No Esta Disponible\n")
-                    if "http" in result:
+                    if "http" in result is not None:
                         f.write(f'Titulo: Nombre Pagina: {result["http"]["title"]}')
+                        f.write("\n")
                         f.write(f'Banner: Código de estado HTTP: {result["http"]["status"]}')
+                        f.write("\n")
                     else:
                         f.write("Titulo : Nombre Pagina: No Encontrado")
+                        f.write("\n")
                         f.write("Codigo de estado HTTP: UNKOWN")
+                        f.write("\n")
                     f.write("Organización: " + result['org'] + "\n")
                     f.write("Puertos: " + str(result['port']) + "\n")
                     f.write("Región: " + result['location']['region_code'] + "\n")
