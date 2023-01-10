@@ -49,10 +49,14 @@ try:
                 print("Titulo : Nombre Pagina: No Encontrado" , file = f)
                 print("Codigo de estado HTTP: UNKOWN")
                 print("Codigo de estado HTTP: UNKOWN" , file = f)
+            if "os" in item is not None:
+                print(f'Sistema Operativo: {item["os"]}')
+                print(f'Sistema Operativo: {item["os"]}' , file = f)
+            else:
+                print("Sistema Operativo: No Es Una Computadora")
+                print("Sistema Operativo: No Es Una Computadora" , file = f)
             print("Puerto:", item['port'])
             print("Puerto:", item['port'], file = f)
-            print("Sistema operativo:", item['os'])
-            print("Sistema operativo:", item['os'], file = f)
             print("Organización:", item['org'])            
             print("Organización:", item['org'], file = f)
             print("Ciudad:", item['location']['city'] + "\n")            
@@ -101,6 +105,11 @@ finally:
                         f.write("Codigo de estado HTTP: UNKOWN")
                         f.write("\n")
                     f.write("Organización: " + result['org'] + "\n")
+                    if "os" in result is not None:
+                        f.write(f'Sistema Operativo: {result["os"]}')
+                    else:
+                        f.write("Sistema Operativo: No Es Una Computadora")
+                    f.write("\n")
                     f.write("Puertos: " + str(result['port']) + "\n")
                     f.write("Región: " + result['location']['region_code'] + "\n")
                     f.write("Ciudad: " + result['location']['city'] + "\n")
@@ -117,6 +126,10 @@ finally:
                         print("Titulo : Nombre Pagina: No Encontrado")
                         print("Codigo de estado HTTP: UNKOWN")
                     print("Organización:", result['org'])
+                    if "os" in result:
+                        print(f'Sistema Operativo: {result["os"]}')
+                    else:
+                        print("Sistema Operativo: No Es Una Computadora")
                     print("Puertos:", result['port'])
                     print("Región:", result['location']['region_code'])
                     print("Ciudad:", result['location']['city'])
