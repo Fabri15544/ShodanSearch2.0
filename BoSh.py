@@ -1,5 +1,8 @@
 import shodan
 import ipaddress
+from termcolor import colored
+from colorama import init
+init()
 
 print("-----------------------------")
 print("BUSCADOR SHODAN")
@@ -38,32 +41,33 @@ try:
             print("Please enter a valid IP address")
         # Recorre cada resultado y muestra la información en pantalla y en el archivo
         for item in host_info['data']:
-            print("IP: " + item['ip_str'] + ":" + str(item['port']))
+            print(colored("IP: ","yellow") + colored(item['ip_str'],"white") + colored(":","white") + str(colored(item['port'],"white")))
             print("IP: " + item['ip_str'] + ":" + str(item['port']) , file = f)
             if 'product' in item is not None:
-                print("Servicio:", item['product'])
+                print(colored("Servicio:","yellow"), colored(item['product'],"green"))
                 print("Servicio:", item['product'], file = f)
             else:
-                print("Servicio: El Servicio No Esta Disponible")
+                print(colored("Servicio:","yellow") + colored("El Servicio No Esta Disponible","red"))
                 print("Servicio: El Servicio No Esta Disponible" , file = f)
             if "http" in item is not None:
-                print(f'Titulo: Nombre Pagina: {item["http"]["title"]}')
-                print(f'Banner: Código de estado HTTP: {item["http"]["status"]}')
+                print(((colored("Titulo Nombre Pagina: ","yellow")) + colored(item["http"]["title"],"cyan")))
+                print(colored("Banner: Código de estado HTTP:","yellow"),colored(item["http"]["status"],"cyan"))
                 print(f'Banner: Código de estado HTTP: {item["http"]["status"]}' , file = f)
             else:
-                print("Titulo : Nombre Pagina: No Encontrado")
-                print("Titulo : Nombre Pagina: No Encontrado" , file = f)
-                print("Codigo de estado HTTP: UNKOWN")
+                print(colored("Titulo: ","yellow") + colored("Nombre Pagina[No Encontrado]","red"))
+                print("Titulo : Nombre Pagina[No Encontrado]" , file = f)
+                print(colored("Codigo de estado HTTP: ","yellow") + colored("UNKOWN","red"))
                 print("Codigo de estado HTTP: UNKOWN" , file = f)
             if "os" in item is not None:
-                print(f'Sistema Operativo: {item["os"]}')
+                print(colored("Sistema Operativo:","yellow") , colored(item[("os")],"cyan"))
                 print(f'Sistema Operativo: {item["os"]}' , file = f)
             else:
-                print("Sistema Operativo: No Es Una Computadora")
+                print(colored("Sistema Operativo: No Es Una Computadora","blue"))
                 print("Sistema Operativo: No Es Una Computadora" , file = f)
-            print("Organización:", item['org'])            
-            print("Organización:", item['org'], file = f)
-            print("Ciudad:", item['location']['city'] + "\n")            
+            print(colored("Organización:","yellow"), colored(item['org'],"cyan"))            
+            print("Organización:", (item['org'],"cyan"), file = f)
+            print(colored("Region:","yellow"), colored(item['location']['region_code'],"white")) 
+            print(colored("Ciudad:","yellow"), colored(item['location']['city'],"white") + "\n")            
             print("Ciudad:", item['location']['city'] + "\n", file = f)
             # Intenta acceder a la lista de vulnerabilidades conocidas (CVE)
             try:
@@ -74,9 +78,9 @@ try:
                 pass
         # Si se encontraron vulnerabilidades conocidas, las muestra en pantalla
         if cves_list:
-            print('CVE:')
+            print(colored('CVE:',"red"))
             print('ES VULNERABLE CVE-XXXX', file = f)  # Muestra un título para la lista de CVE
-            cves = ' - '.join(cves_list)  # Une la lista de CVE en una sola cadena
+            cves = ' - '.join([colored(cve, "red") for cve in cves_list])  # Une la lista de CVE en una sola cadena
             print(f'{cves}')
     except shodan.APIError as e:
         print("Error de la API:", e)
@@ -100,7 +104,7 @@ finally:
                         f.write("Servicio: " + result['product'] + "\n")
                     else:
                         f.write("Servicio: El Servicio No Esta Disponible\n")
-                    if "http" in result is not None:
+                    if 'http' in result and result['http'] is not None and 'title' in result['http'] and result["http"]["title"] is not None:
                         f.write(f'Titulo: Nombre Pagina: {result["http"]["title"]}')
                         f.write("\n")
                         f.write(f'Banner: Código de estado HTTP: {result["http"]["status"]}')
@@ -119,25 +123,25 @@ finally:
                     f.write("Región: " + result['location']['region_code'] + "\n")
                     f.write("Ciudad: " + result['location']['city'] + "\n")
                     f.write("\n")
-                    print("IP: " + result['ip_str'] + ":" + str(result['port']))
+                    print(colored("IP: ","yellow") + colored(result['ip_str'],"white") + colored(":","white") + str(colored(result['port'],"white")))
                     if 'product' in result is not None:
-                        print("Servicio:", result['product'])
+                        print(colored("Servicio: ","yellow"), colored(result['product'],"cyan"))
                     else:
-                        print("Servicio: El Servicio No Esta Disponible")
-                    if "http" in result is not None:
-                        print(f'Titulo: Nombre Pagina: {result["http"]["title"]}')
-                        print(f'Banner: Código de estado HTTP: {result["http"]["status"]}')
+                        print(colored("Servicio:","yellow") + colored("El Servicio No Esta Disponible","red"))
+                    if  'http' in result and result['http'] is not None and 'title' in result['http'] and result["http"]["title"] is not None:
+                        print(colored("Titulo Nombre Pagina: ","yellow") + colored(result["http"]["title"],"cyan"))
+                        print(colored("Banner: ","yellow") + colored("Código de estado HTTP:","yellow") + colored(result["http"]["status"],"green"))
                     else:
-                        print("Titulo : Nombre Pagina: No Encontrado")
-                        print("Codigo de estado HTTP: UNKOWN")
-                    print("Organización:", result['org'])
+                        print(colored("Titulo ","yellow") + colored("Nombre Pagina[No Encontrado]","red"))
+                        print(colored("Codigo de estado HTTP: ","yellow") + colored("UNKOWN","red"))
+                    print(colored("Organización: ","yellow"), colored(result['org'],"cyan"))
                     if "os" in result is not None:
-                        print(f'Sistema Operativo: {result["os"]}')
+                        print(colored("Sistema Operativo: ","yellow") + colored(result["os"],"cyan"))
                     else:
-                        print("Sistema Operativo: No Es Una Computadora")
-                    print("Región:", result['location']['region_code'])
-                    print("Ciudad:", result['location']['city'])
-                    print("Timestamp:", result['timestamp'])
+                        print(colored("Sistema Operativo: ","yellow") + coloread("No Es Una Computadora","red"))
+                    print(colored("Región:","yellow"), colored(result['location']['region_code'],"white"))
+                    print(colored("Ciudad:","yellow"), colored(result['location']['city'],"white"))
+                    print(colored("Timestamp:","yellow"), colored(result['timestamp'],"cyan"))
                     print()
         # Si hay un error al abrir el archivo, muestra un mensaje de error
         except Exception as e:
