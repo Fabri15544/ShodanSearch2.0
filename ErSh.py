@@ -74,8 +74,8 @@ if query is not None:
             
             # Filtra En La Busqueda Si Hay Filtro
             for result in search_results["matches"]:
-                if 'country_code' in result['location'] or 'city' in result['location'] or 'product' in result["matches"]:
-                   if servicio is not None and (servicio in result.get('product', []))  or name is not None and (name in result['location'].get('country_code', []) or name in result['location'].get('city', [])):
+               # if 'country_code' in result['location'] or 'city' in result['location'] or 'product' in result["matches"]:
+                   if (servicio in result.get('product', [])) and (name in result['location'].get('country_code', []) or name in result['location'].get('city', [])):
                     ip = result["ip_str"]
                     port = result["port"]
                     os = result["os"]
