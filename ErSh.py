@@ -27,7 +27,7 @@ max_chars = int(input("Numero Maximo De Letras (Recomendado de 1 al 4): "))
 print("\n")
 
 # Tiempo De Espera
-delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 5 a 10): "))
+delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 8 a 15): "))
 print("\n")
 
 # Muestra una lista ISP Cargado Desde Shodan
@@ -39,16 +39,19 @@ print("\n")
 
 # Inicia La Busqueda
 print("Filtro: ISP/PAIS/MODELO/EXTENCION EJ:JPG , view camera")
-print("Se Puede Usar El - Para indicar que no muestre algo(Ej: -apache/-windows)")
+print("Se Puede Usar El - Para indicar que no muestre algo(Ej: -OpenSSH -Microsoft -nginx -Apache -Windows -Remote -lwIP -Desktop -DNVRS -usuario  -web -webs -webserver -VNC -RTSP)")
 print("ISP AR: Telecom Argentina S.A")
 print("No Es Obligatorio Poner Algo")
 query = input("Buscar: ")
 print("\n")
 
 # Filtra En La Pagina
+print("LOS FILTROS PUEDEN TARDAR EN CARGAR...(Sin Filtro Dejar En Blanco)" + "\n")
 print("Para Filtrar Los resultados Buscados Por (Ciudad/Region)")
-print("Puede Tardar En Cargar..(Sin Filtro Dejar En Blanco)")
 name = input("Filtrar Resultados Busqueda: ")
+print("\n")
+print("ES OBLIGATORIO PONER EL SERVICIO DE LO CONTRARIO BUSCARA DE FORMA ERRATICA")
+servicio = input("Filtrar Resultados Busqueda Dentro De Cada URL: ")
 print("\n")
 
 # Crea Una lista vacia
@@ -56,7 +59,10 @@ results = []
 
 # Abre El Archivo De Texto Y Escribe En El
 if query is not None:
-   with open("BusquedaErratica.txt", "w", encoding="utf-8") as f:
+   # Genera Caracteres Aleatorios
+   numeros = "0123456789"
+   random_save = "".join(random.choices(numeros, k=64))
+   with open(random_save + ".txt", "w", encoding="utf-8") as f:
     # Inicia El Bucle
     while True:
             # Genera Caracteres Aleatorios
@@ -68,8 +74,8 @@ if query is not None:
             
             # Filtra En La Busqueda Si Hay Filtro
             for result in search_results["matches"]:
-                if 'country_code' in result['location'] or 'city' in result['location']:
-                   if name is not None and (name in result['location'].get('country_code', []) or name in result['location'].get('city', [])):
+                if 'country_code' in result['location'] or 'city' in result['location'] or 'product' in result["matches"]:
+                   if servicio is not None and (servicio in result.get('product', []))  or name is not None and (name in result['location'].get('country_code', []) or name in result['location'].get('city', [])):
                     ip = result["ip_str"]
                     port = result["port"]
                     os = result["os"]
