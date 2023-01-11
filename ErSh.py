@@ -23,11 +23,11 @@ except FileNotFoundError:
 api = shodan.Shodan(api_key)
 
 # Maximo De Letras A Generar
-max_chars = int(input("Numero Maximo De Letras (Recomendado 1 o 2): "))
+max_chars = int(input("Numero Maximo De Letras (Recomendado de 1 al 4): "))
 print("\n")
 
 # Tiempo De Espera
-delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado 5 a 10): "))
+delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 5 a 10): "))
 print("\n")
 
 # Muestra una lista ISP Cargado Desde Shodan
@@ -39,13 +39,14 @@ print("\n")
 
 # Inicia La Busqueda
 print("Filtro: ISP/PAIS/MODELO/EXTENCION EJ:JPG , view camera")
+print("Se Puede Usar El - Para indicar que no muestre algo(Ej: -apache/-windows)")
 print("ISP AR: Telecom Argentina S.A")
 print("No Es Obligatorio Poner Algo")
 query = input("Buscar: ")
 print("\n")
 
 # Filtra En La Pagina
-print("Para Filtrar Los resultados Buscados Por Ej: apache/windows/remote/smb")
+print("Para Filtrar Los resultados Buscados Por (Ciudad/Region)")
 print("Puede Tardar En Cargar..(Sin Filtro Dejar En Blanco)")
 name = input("Filtrar Resultados Busqueda: ")
 print("\n")
@@ -54,7 +55,8 @@ print("\n")
 results = []
 
 # Abre El Archivo De Texto Y Escribe En El
-with open(query + ".txt", "w", encoding="utf-8") as f:
+if query is not None:
+   with open("BusquedaErratica.txt", "w", encoding="utf-8") as f:
     # Inicia El Bucle
     while True:
             # Genera Caracteres Aleatorios
@@ -66,12 +68,13 @@ with open(query + ".txt", "w", encoding="utf-8") as f:
             
             # Filtra En La Busqueda Si Hay Filtro
             for result in search_results["matches"]:
-                if name in result["data"]:
+                if 'country_code' in result['location'] or 'city' in result['location']:
+                   if name is not None and (name in result['location'].get('country_code', []) or name in result['location'].get('city', [])):
                     ip = result["ip_str"]
                     port = result["port"]
                     os = result["os"]
                     services = result["_shodan"]["module"]
-                    region = result["location"]["region_code"]
+                    region = result["location"]["country_code"]
                     city = result["location"]["city"]
                     
                     # Guarda Los Datos Sin Repetirlos

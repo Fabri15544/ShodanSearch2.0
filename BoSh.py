@@ -51,7 +51,7 @@ try:
                 print("Servicio: El Servicio No Esta Disponible" , file = f)
             if "http" in item is not None:
                 print(((colored("Titulo Nombre Pagina: ","yellow")) + colored(item["http"]["title"],"cyan")))
-                print(colored("Banner: Código de estado HTTP:","yellow"),colored(item["http"]["status"],"cyan"))
+                print(colored("Banner: Código de estado HTTP:","yellow"),colored(item["http"]["status"],"green"))
                 print(f'Banner: Código de estado HTTP: {item["http"]["status"]}' , file = f)
             else:
                 print(colored("Titulo: ","yellow") + colored("Nombre Pagina[No Encontrado]","red"))
@@ -66,7 +66,7 @@ try:
                 print("Sistema Operativo: No Es Una Computadora" , file = f)
             print(colored("Organización:","yellow"), colored(item['org'],"cyan"))            
             print("Organización:", (item['org'],"cyan"), file = f)
-            print(colored("Region:","yellow"), colored(item['location']['region_code'],"white")) 
+            print(colored("Region:","yellow"), colored(item['location']['country_code'],"white")) 
             print(colored("Ciudad:","yellow"), colored(item['location']['city'],"white") + "\n")            
             print("Ciudad:", item['location']['city'] + "\n", file = f)
             # Intenta acceder a la lista de vulnerabilidades conocidas (CVE)
@@ -139,7 +139,7 @@ finally:
                         print(colored("Sistema Operativo: ","yellow") + colored(result["os"],"cyan"))
                     else:
                         print(colored("Sistema Operativo: ","yellow") + coloread("No Es Una Computadora","red"))
-                    print(colored("Región:","yellow"), colored(result['location']['region_code'],"white"))
+                    print(colored("Región:","yellow"), colored(result['location']['country_code'],"white"))
                     print(colored("Ciudad:","yellow"), colored(result['location']['city'],"white"))
                     print(colored("Timestamp:","yellow"), colored(result['timestamp'],"cyan"))
                     print()
