@@ -73,7 +73,10 @@ if query is not None:
                     ip = result["ip_str"]
                     port = result["port"]
                     os = result["os"]
-                    services = result["_shodan"]["module"]
+                    if 'product' in result:
+                        services = result['product']
+                    else:
+                        services = None
                     region = result["location"]["country_code"]
                     city = result["location"]["city"]
                     
