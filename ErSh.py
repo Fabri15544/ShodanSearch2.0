@@ -50,7 +50,6 @@ print("LOS FILTROS PUEDEN TARDAR EN CARGAR...(Sin Filtro Dejar En Blanco)" + "\n
 print("Para Filtrar Los resultados Buscados Por (Ciudad/Region)")
 name = input("Filtrar Resultados Busqueda: ")
 print("\n")
-print("ES OBLIGATORIO PONER EL SERVICIO DE LO CONTRARIO BUSCARA DE FORMA ERRATICA")
 servicio = input("Filtrar Por Servicio: ")
 print("\n")
 html = input("Filtrar Resultados Busqueda Dentro De Cada URL: ")
