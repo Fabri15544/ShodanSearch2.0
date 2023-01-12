@@ -18,3 +18,6 @@ ErSh.py(Erratica Busqueda)
 Funciona Principalmente para Encontrar Mas IPs,Hosts... de las que shodan deja buscar
 La busqueda puede tardar dependiendo de que se busque todo se guarda en un documento de texto con la ip,puerto,sistema operativo
 region,ciudad,servicios.(Busqueda Simple para mas informacion coloque la IP elegida en BoSh.py)
+
+
+SI RECIBE ALGUN TIPO DE ERROR PUEDE INCREPENTAR EL TIEMPO DE ESPERA ENTRE SOLICITUDES.
