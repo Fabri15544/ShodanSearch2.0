@@ -45,8 +45,11 @@ max_chars = int(input("Numero Maximo De Letras (Recomendado de 1 al 4): "))
 print("\n")
 
 # Tiempo De Espera
-delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 1 a 3): "))
+delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 2 a 5): "))
 print("\n")
+
+max_chars = 1 #default
+delay = 5 #default
 
 # Muestra una lista ISP Cargado Desde Shodan
 #results = api.search(query='isp')
