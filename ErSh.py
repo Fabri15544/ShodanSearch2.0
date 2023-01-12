@@ -2,7 +2,21 @@ import shodan
 import random
 import string
 import time
-
+import os
+import subprocess
+from termcolor import colored
+from colorama import init
+init()
+print("\n")
+print("\n")
+print("\n")
+print(colored("[NO ME HAGO RESPONSABLE DEL MAL USO DE ESTA HERRAMIENTA]","red"))
+print(colored("[NO ME HAGO RESPONSABLE DEL MAL USO DE ESTA HERRAMIENTA]","red"))
+print(colored("[NO ME HAGO RESPONSABLE DEL MAL USO DE ESTA HERRAMIENTA]","red"))
+print(colored("[NO ME HAGO RESPONSABLE DEL MAL USO DE ESTA HERRAMIENTA]","red"))
+print(colored("[NO ME HAGO RESPONSABLE DEL MAL USO DE ESTA HERRAMIENTA]","red"))
+print("\n")
+print("\n")
 print("-----------------------------")
 print("BUSQUEDA ERRATICA EN SHODAN")
 print("-----------------------------")
@@ -23,11 +37,15 @@ except FileNotFoundError:
 api = shodan.Shodan(api_key)
 
 # Maximo De Letras A Generar
+print("Genera numeros y letras para buscar en shodan sin el limite de pagina")
+print("si sube mucho el numero la busqueda va a tardar mas pero puede encontrar")
+print("cosas nuevas")
+print("\n")
 max_chars = int(input("Numero Maximo De Letras (Recomendado de 1 al 4): "))
 print("\n")
 
 # Tiempo De Espera
-delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 8 a 15): "))
+delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 1 a 3): "))
 print("\n")
 
 # Muestra una lista ISP Cargado Desde Shodan
@@ -41,7 +59,7 @@ print("\n")
 print("Filtro: ISP/PAIS/MODELO/EXTENCION EJ:JPG , view camera")
 print("Se Puede Usar El - Para indicar que no muestre algo(Ej: -OpenSSH -Microsoft -nginx -Apache -Windows -Remote -lwIP -Desktop -DNVRS -usuario  -web -webs -webserver -VNC -RTSP)")
 print("ISP AR: Telecom Argentina S.A")
-print("No Es Obligatorio Poner Algo")
+print("No Es Obligatorio Poner Algo" + "\n")
 query = input("Buscar: ")
 print("\n")
 
@@ -53,6 +71,16 @@ print("\n")
 servicio = input("Filtrar Por Servicio: ")
 print("\n")
 html = input("Filtrar Resultados Busqueda Dentro De Cada URL: ")
+print("\n")
+
+os.system('cls')
+
+print("-----------------------------")
+print("BUSQUEDA ERRATICA EN SHODAN")
+print("-----------------------------")
+print("\n")
+
+print("BUSCANDO:" + " " + query + ", Region/Ciudad: " + name + ", Servicio: " + servicio + ", Html: " + html)
 print("\n")
 
 # Crea Una lista vacia
@@ -67,11 +95,16 @@ if query is not None:
     # Inicia El Bucle
     while True:
             # Genera Caracteres Aleatorios
-            characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-            random_query = "".join(random.choices(characters, k=max_chars))
+            characters = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789"]
+            filtro = [" ", "in ['data']","in ['http']","in ['product']", "in ['region']", "in ['matches']","in ['port']"]
+            random_query = ("".join(random.choices(characters[0], k=max_chars)),"".join(random.choices(characters[1], k=max_chars)),"".join(random.choices(characters[2], k=max_chars)),"".join(random.choices(characters[0]+characters[1], k=max_chars)),"".join(random.choices(characters[0]+characters[1]+characters[2], k=max_chars)))
+            random_filtro = random.choice(filtro)
             
             # Busca En Shodan
-            search_results = api.search(query +" "+ random_query)
+            random_string = random.choice(random_query)
+            search_string = query + " " + random_string + " " + random_filtro
+            search_results = api.search(search_string)
+
             
             # Filtra En La Busqueda Si Hay Filtro
             for result in search_results["matches"]:
