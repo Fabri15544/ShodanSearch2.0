@@ -51,7 +51,9 @@ print("Para Filtrar Los resultados Buscados Por (Ciudad/Region)")
 name = input("Filtrar Resultados Busqueda: ")
 print("\n")
 print("ES OBLIGATORIO PONER EL SERVICIO DE LO CONTRARIO BUSCARA DE FORMA ERRATICA")
-servicio = input("Filtrar Resultados Busqueda Dentro De Cada URL: ")
+servicio = input("Filtrar Por Servicio: ")
+print("\n")
+html = input("Filtrar Resultados Busqueda Dentro De Cada URL: ")
 print("\n")
 
 # Crea Una lista vacia
@@ -76,21 +78,22 @@ if query is not None:
             for result in search_results["matches"]:
                # if 'country_code' in result['location'] or 'city' in result['location'] or 'product' in result["matches"]:
                    if (servicio in result.get('product', [])) and (name in result['location'].get('country_code', []) or name in result['location'].get('city', [])):
-                    ip = result["ip_str"]
-                    port = result["port"]
-                    os = result["os"]
-                    if 'product' in result:
-                        services = result['product']
-                    else:
-                        services = None
-                    region = result["location"]["country_code"]
-                    city = result["location"]["city"]
+                       if html in result['data']:
+                         ip = result["ip_str"]
+                         port = result["port"]
+                         os = result["os"]
+                         if 'product' in result:
+                              services = result['product']
+                         else:
+                              services = None
+                         region = result["location"]["country_code"]
+                         city = result["location"]["city"]
                     
-                    # Guarda Los Datos Sin Repetirlos
-                    if ip not in [x[0] for x in results]:
-                        results.append((ip, port, os, region, city, services))
-                        print(f"Resultados De La Busqueda: {ip}:{port} ({os}) ({region}, {city}) ({services})")
-                        f.write(f"{ip},{port},{os},{region},{city},{services}\n")
+                              # Guarda Los Datos Sin Repetirlos
+                         if ip not in [x[0] for x in results]:
+                                 results.append((ip, port, os, region, city, services))
+                                 print(f"Resultados De La Busqueda: {ip}:{port} ({os}) ({region}, {city}) ({services})")
+                                 f.write(f"{ip},{port},{os},{region},{city},{services}\n")
             
-            # Tiempo Espera Busqueda
-            time.sleep(delay)
+                                 # Tiempo Espera Busqueda
+                                 time.sleep(delay)
