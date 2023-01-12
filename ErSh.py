@@ -35,21 +35,29 @@ except FileNotFoundError:
         
 # inicia la api
 api = shodan.Shodan(api_key)
-
 # Maximo De Letras A Generar
 print("Genera numeros y letras para buscar en shodan sin el limite de pagina")
 print("si sube mucho el numero la busqueda va a tardar mas pero puede encontrar")
 print("cosas nuevas")
 print("\n")
-max_chars = int(input("Numero Maximo De Letras (Recomendado de 1 al 4): "))
-print("\n")
 
-# Tiempo De Espera
-delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 2 a 5): "))
-print("\n")
+#default
+max_chars = 1
+delay = 3
 
-max_chars = 1 #default
-delay = 5 #default
+try:
+    # Numero Maximo Caracteres
+    max_chars = int(input("Numero Maximo De Letras (Recomendado de 1 al 4, valor default = {}): ".format(max_chars))) or max_chars
+    print("\n")
+except ValueError:
+    pass
+
+try:
+    # Tiempo De Espera
+    delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 2 a 5, valor default = {}): ".format(delay))) or delay
+    print("\n")
+except ValueError:
+    pass
 
 # Muestra una lista ISP Cargado Desde Shodan
 #results = api.search(query='isp')
