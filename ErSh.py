@@ -43,7 +43,7 @@ print("\n")
 
 #default
 max_chars = 1
-delay = 3
+delay = 1
 
 try:
     # Numero Maximo Caracteres
@@ -54,7 +54,7 @@ except ValueError:
 
 try:
     # Tiempo De Espera
-    delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 2 a 5, valor default = {}): ".format(delay))) or delay
+    delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 1 a 3, valor default = {}): ".format(delay))) or delay
     print("\n")
 except ValueError:
     pass
