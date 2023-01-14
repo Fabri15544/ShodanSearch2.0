@@ -2,8 +2,6 @@ import shodan
 import random
 import string
 import time
-import os
-import subprocess
 from termcolor import colored
 from colorama import init
 init()
@@ -18,7 +16,7 @@ print(colored("[NO ME HAGO RESPONSABLE DEL MAL USO DE ESTA HERRAMIENTA]","red"))
 print("\n")
 print("\n")
 print("-----------------------------")
-print("BUSQUEDA ERRATICA EN SHODAN")
+print(colored("BUSQUEDA ERRATICA EN SHODAN","white"))
 print("-----------------------------")
 print("\n")
 
@@ -35,67 +33,39 @@ except FileNotFoundError:
         
 # inicia la api
 api = shodan.Shodan(api_key)
+
 # Maximo De Letras A Generar
-print("Genera numeros y letras para buscar en shodan sin el limite de pagina")
-print("si sube mucho el numero la busqueda va a tardar mas pero puede encontrar")
-print("cosas nuevas")
-print("\n")
+max_range = int(input(colored("Enter the maximum number of characters to generate (Recommended 1 al 4, default = 4)): ","cyan"))or 4)
 
-#default
-max_chars = 1
-delay = 1
-
-try:
-    # Numero Maximo Caracteres
-    max_chars = int(input("Numero Maximo De Letras (Recomendado de 1 al 4, valor default = {}): ".format(max_chars))) or max_chars
-    print("\n")
-except ValueError:
-    pass
-
-try:
-    # Tiempo De Espera
-    delay = int(input("Tiempo Espera Entre Solicitudes (Recomendado de 1 a 3, valor default = {}): ".format(delay))) or delay
-    print("\n")
-except ValueError:
-    pass
-
-# Muestra una lista ISP Cargado Desde Shodan
-#results = api.search(query='isp')
-
-# Muestra los resultados
-#for result in results['matches']:
-#    print(result['isp'])
+# Tiempo De Espera
+delay = int(input(colored("Enter the delay time between requests (Recommended 1 al 3, default = 1): ","cyan")) or 1)
 
 # Inicia La Busqueda
-print("Filtro: ISP/PAIS/MODELO/EXTENCION EJ:JPG , view camera")
-print("Se Puede Usar El - Para indicar que no muestre algo(Ej: -OpenSSH -Microsoft -nginx -Apache -Windows -Remote -lwIP -Desktop -DNVRS -usuario  -web -webs -webserver -VNC -RTSP)")
-print("ISP AR: Telecom Argentina S.A")
-print("No Es Obligatorio Poner Algo" + "\n")
-query = input("Buscar: ")
+print(colored("Algo que puede buscar(OpenSSH,Microsoft,nginx,Apache,Windows,Remote,","green"))
+print(colored("lwIP,Desktop,DNVRS,usuario,web,webs,webserver,VNC,RTSP,view camera,JPG","green"))
+print(colored("Puede usar el valor - para indicar que no se busque algon en SHODAN","green"))
+print(colored("No Es Obligatorio Poner Algo","yellow") + "\n")
+query = input(colored("Buscar: ","cyan"))
 print("\n")
 
 # Filtra En La Pagina
-print("LOS FILTROS PUEDEN TARDAR EN CARGAR...(Sin Filtro Dejar En Blanco)" + "\n")
-print("Para Filtrar Los resultados Buscados Por (Ciudad/Region)")
-name = input("Filtrar Resultados Busqueda: ")
+print(colored("LOS FILTROS PUEDEN TARDAR EN CARGAR...(Sin Filtro Dejar En Blanco)","yellow"))
 print("\n")
-servicio = input("Filtrar Por Servicio: ")
+name = input(colored("Filtrar Por (Ciudad/Region): ","cyan"))
 print("\n")
-html = input("Filtrar Resultados Busqueda Dentro De Cada URL: ")
+print(colored("EL NOMBRE DEL SERVICIO DEBE SER IGUAL","yellow"))
+print(colored("O NO BUSCARA NADA , SE LE MOSTRARAN ","yellow"))
+print(colored("LOS SERVICIOS EN COLOR AMARILLO AL REALIZAR","yellow"))
+print(colored("UNA BUSQUEDA","yellow"))
 print("\n")
-
-os.system('cls')
-
-print("-----------------------------")
-print("BUSQUEDA ERRATICA EN SHODAN")
-print("-----------------------------")
+servicio = input(colored("Filtrar Por Servicio: ","cyan"))
 print("\n")
-
-print("BUSCANDO:" + " " + query + ", Region/Ciudad: " + name + ", Servicio: " + servicio + ", Html: " + html)
+html = input(colored("Filtrar Dentro De Cada HTML con una palabra clave: ","cyan"))
 print("\n")
 
 # Crea Una lista vacia
 results = []
+Iterar = True
 
 # Abre El Archivo De Texto Y Escribe En El
 if query is not None:
@@ -106,20 +76,19 @@ if query is not None:
     # Inicia El Bucle
     while True:
             # Genera Caracteres Aleatorios
+            max_chars = random.randint(1, max_range)
             characters = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789"]
-            filtro = [" ", "in ['data']","in ['http']","in ['product']", "in ['region']", "in ['matches']","in ['port']"]
             random_query = ("".join(random.choices(characters[0], k=max_chars)),"".join(random.choices(characters[1], k=max_chars)),"".join(random.choices(characters[2], k=max_chars)),"".join(random.choices(characters[0]+characters[1], k=max_chars)),"".join(random.choices(characters[0]+characters[1]+characters[2], k=max_chars)))
-            random_filtro = random.choice(filtro)
+            
+            random_string = random.choice(random_query)
+            busqueda = query + " " + random_string
             
             # Busca En Shodan
-            random_string = random.choice(random_query)
-            search_string = query + " " + random_string + " " + random_filtro
-            search_results = api.search(search_string)
-
+            search_results = api.search(str(busqueda))
             
-            # Filtra En La Busqueda Si Hay Filtro
-            for result in search_results["matches"]:
-               # if 'country_code' in result['location'] or 'city' in result['location'] or 'product' in result["matches"]:
+            if search_results["total"] > 0:
+                # Filtra En La Busqueda Si Hay Filtro
+                for result in search_results["matches"]:
                    if (servicio in result.get('product', [])) and (name in result['location'].get('country_code', []) or name in result['location'].get('city', [])):
                        if html in result['data']:
                          ip = result["ip_str"]
@@ -132,11 +101,12 @@ if query is not None:
                          region = result["location"]["country_code"]
                          city = result["location"]["city"]
                     
-                              # Guarda Los Datos Sin Repetirlos
+                         # Guarda Los Datos Sin Repetirlos
                          if ip not in [x[0] for x in results]:
                                  results.append((ip, port, os, region, city, services))
-                                 print(f"Resultados De La Busqueda: {ip}:{port} ({os}) ({region}, {city}) ({services})")
+                                 print(f"Resultados De La Busqueda: {ip}:{port} ({os}) {region}, {city}" + " " + colored("SERVICIO: ","cyan") + colored(services,"yellow"))
                                  f.write(f"{ip},{port},{os},{region},{city},{services}\n")
+            print(colored("No Encontre Coincidencias Con: ","red") + colored(busqueda,"cyan"),"\r" * 20, end="")
             
-                                 # Tiempo Espera Busqueda
-                                 time.sleep(delay)
+            # Tiempo Espera Busqueda
+            time.sleep(delay)
