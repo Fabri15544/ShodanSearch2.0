@@ -77,14 +77,14 @@ if query is not None:
     while True:
             # Genera Caracteres Aleatorios
             max_chars = random.randint(1, max_range)
-            characters = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789"]
+            characters = [" ABCDEFGHIJKLMNOPQRSTUVWXYZ "," abcdefghijklmnopqrstuvwxyz "," 0123456789 "]
             random_query = ("".join(random.choices(characters[0], k=max_chars)),"".join(random.choices(characters[1], k=max_chars)),"".join(random.choices(characters[2], k=max_chars)),"".join(random.choices(characters[0]+characters[1], k=max_chars)),"".join(random.choices(characters[0]+characters[1]+characters[2], k=max_chars)))
             
-            random_string = random.choice(random_query)
+            random_string = '"' + random.choice(random_query) + '"'
             busqueda = query + " " + random_string
             
             # Busca En Shodan
-            search_results = api.search(str(busqueda))
+            search_results = api.search(busqueda)
             
             if search_results["total"] > 0:
                 # Filtra En La Busqueda Si Hay Filtro
