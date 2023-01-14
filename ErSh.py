@@ -91,7 +91,7 @@ if query is not None:
             if search_results["total"] > 0:
                 # Filtra En La Busqueda Si Hay Filtro
                 for result in search_results["matches"]:
-                   if result.get('product') and servicio in result.get('product') and (result.get('location') and (name in result['location'].get('country_code', []) or name in result['location'].get('city', []))):
+                   if result.get('product') and servicio in result.get('product') and ((result.get('location') is not None) and (name in result['location'].get('country_code', []) or name in result['location'].get('city', []))):
                        if html in result['data']:
                          ip = result["ip_str"]
                          port = result["port"]
