@@ -79,7 +79,7 @@ if query is not None:
     while True:
             # Genera Caracteres Aleatorios
             max_chars = random.randint(1, max_range)
-            characters = [" ABCDEFGHIJKLMNOPQRSTUVWXYZ "," abcdefghijklmnopqrstuvwxyz "," 0123456789 "]
+            characters = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789"]
             random_query = ("".join(random.choices(characters[0], k=max_chars)),"".join(random.choices(characters[1], k=max_chars)),"".join(random.choices(characters[2], k=max_chars)),"".join(random.choices(characters[0]+characters[1], k=max_chars)),"".join(random.choices(characters[0]+characters[1]+characters[2], k=max_chars)))
             
             random_string = '"' + random.choice(random_query) + '"'
@@ -108,7 +108,8 @@ if query is not None:
                                  results.append((ip, port, os, region, city, services))
                                  print(f"Resultados De La Busqueda: {ip}:{port} ({os}) {region}, {city}" + " " + colored("SERVICIO: ","cyan") + colored(services,"yellow"))
                                  f.write(f"{ip},{port},{os},{region},{city},{services}\n")
-            print(colored("No Encontre Coincidencias Con: ","red") + colored(busqueda,"cyan"),"\r" * 20, end="")
+            string_length = len(busqueda)
+            print(colored("No Encontre Coincidencias Con: ","red") + colored(busqueda + " " * (string_length),"cyan"),"\r" * 20, end="")
             
             # Tiempo Espera Busqueda
             time.sleep(delay)
