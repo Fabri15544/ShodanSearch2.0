@@ -37,10 +37,10 @@ api = shodan.Shodan(api_key)
 # Maximo De Letras A Generar
 print(colored("Esto es para obtener mas respues del servidor Shodan","yellow"))
 print("\n")
-max_range = int(input(colored("Maximo Numeros De Caracteres(Recomendado 1 al 4, default = 4)): ","cyan"))or 4)
+max_range = int(input(colored("Maximo Numeros De Caracteres(Recomendado 1 al 20, default = 2)): ","cyan"))or 2)
 
 # Tiempo De Espera
-delay = int(input(colored("Tiempo de Espera entre Solicitudes(Recomendado 1 al 3, default = 1): ","cyan")) or 1)
+delay = int(input(colored("Tiempo de Espera entre Solicitudes(Recomendado 1 al 3, default = 2): ","cyan")) or 2)
 
 # Inicia La Busqueda
 print(colored("Algo que puede buscar(OpenSSH,Microsoft,nginx,Apache,Windows,Remote,","green"))
